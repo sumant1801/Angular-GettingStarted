@@ -1,16 +1,31 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { IProduct } from "./product";
+
 
 @Component({
     selector: 'pm-productlist',
-    templateUrl: './product-list.component.html'
+    templateUrl: './product-list.component.html',
+    styleUrls:['./product-list.component.css']
 })
-export class ProductListComponent{
+export class ProductListComponent implements OnInit{
+ 
  pageTitle: string = 'Product List';
  imageWidth: number = 50;
  imageMargin: number = 2;
  showImage: boolean= false;
- listFilter: string='cart';
- products: any[] = [
+ //listFilter: string='cart';
+ filteredProducts: IProduct[];
+
+ _listfilter: string;
+ get listFilter(): string{
+   return this._listfilter;
+ }
+
+ set listFilter(value:string){
+  this._listfilter = value;
+  this.filteredProducts = this._listfilter? this.performFilter(this._listfilter): this.products;
+}
+ products: IProduct[] = [
     {
       "productId": 1,
       "productName": "Leaf Rake",
@@ -32,7 +47,19 @@ export class ProductListComponent{
       "imageUrl": "https://openclipart.org/image/300px/svg_to_png/58471/garden_cart.png"
     }];
 
+    constructor(){
+      this.filteredProducts = this.products;
+      this.listFilter = 'cart';
+    }
     toggleImage():void{
         this.showImage = !this.showImage;
+    }
+
+    ngOnInit():void{
+      console.log('test oniinti');
+    }
+    performFilter(filterStr: string): IProduct[] {
+      return this.products.filter((product : IProduct) => product.productName.toLocaleLowerCase().indexOf(filterStr) !==-1);
+      //throw new Error("Method not implemented.");
     }
 }
