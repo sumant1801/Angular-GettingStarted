@@ -17,7 +17,7 @@
     </div>
     <div class='table-responsive'>
         <table class='table'
-               *ngIf='products && products.length > 1'>
+               *ngIf='filteredProducts && filteredProducts.length > 1'>
             <thead>
                 <tr>
                     <th>
@@ -42,7 +42,7 @@
                         [style.width.px]='imageWidth'
                         [style.margin.px] ='imageMargin' >
                     </td>
-                    <td>{{product.productName}}</td>
+                    <td><a [routerLink]="['/productlist', product.productId]"> {{product.productName}}</a></td>
                     <td>{{product.productCode | lowercase | convertToSpaces: '-' }}</td>
                     <td>{{product.releaseDate}}</td>
                     <td>{{product.price | currency:'$':symbol:'1.2-2'}}</td>
